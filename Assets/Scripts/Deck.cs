@@ -11,7 +11,7 @@ public class Deck : MonoBehaviour
     public Button playAgainButton;
     public Text finalMessage;
     public Text probMessage;
-
+    public int[] randomDeal = new int[52];
     public int[] values = new int[52];
     int cardIndex = 0;    
        
@@ -51,7 +51,7 @@ public class Deck : MonoBehaviour
             {
                 values[cardIndex] = 11;
             }
-            Debug.Log(values[cardIndex]);
+           // Debug.Log(values[cardIndex]);
             cardIndex++;
            
         }
@@ -60,13 +60,43 @@ public class Deck : MonoBehaviour
     
 }
 
+
+    int cont = 0;
     private void ShuffleCards()
     {
         /*TODO:
          * Barajar las cartas aleatoriamente.
          * El método Random.Range(0,n), devuelve un valor entre 0 y n-1
          * Si lo necesitas, puedes definir nuevos arrays.
-         */       
+         */
+         
+        
+        for(int i=cont;i<values.Length;i++){
+            int randomValue = Random.Range(0, 51);
+            int cont2 = 0;
+            bool rep = false;
+            foreach(int val in randomDeal)
+            {
+                if (randomValue == randomDeal[cont2])
+                {
+                    ShuffleCards();
+                    rep = true;
+                    break;
+                }
+                cont2++;
+            }
+            if (!rep)
+            {
+                randomDeal[i] = randomValue;
+                Debug.Log(randomDeal[randomValue]);
+                cont++;
+            }
+           // break;
+        }
+        if (cont == 52)
+        {
+            cont = 0;
+        }
     }
 
     void StartGame()
