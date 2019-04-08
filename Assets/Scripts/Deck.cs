@@ -186,30 +186,33 @@ public class Deck : MonoBehaviour
          * El dealer se planta al obtener 17 puntos o más
          * Mostramos el mensaje del que ha ganado
          */
-        if (dealer.GetComponent<CardHand>().points <= 16)
-        {
+       
             while (dealer.GetComponent<CardHand>().points < 17)
             {
                 PushDealer();
             }
             dealer.GetComponent<CardHand>().InitialToggle();
-            if ( dealer.GetComponent<CardHand>().points == 21)
+            if (dealer.GetComponent<CardHand>().points == 21)
             {
-                finalMessage.text = "MU BIEN SUERTUDO DE MIERDA, BLACKJACK!";
+                finalMessage.text = "HAHAHA SACÓ BLACKJACK EL OTRO";
+
             }
-            if (dealer.GetComponent<CardHand>().points > 21)
-            {
-                finalMessage.text = "AQUÍ PONE QUE HAS GANADO PERO NO SE YO E";
-            }
-            if(dealer.GetComponent<CardHand>().points> player.GetComponent<CardHand>().points)
-            {
-                finalMessage.text = "GANÓ LA BANCA WEY";
-            }
-            else
+            else if (dealer.GetComponent<CardHand>().points > 21)
             {
                 finalMessage.text = "AQUÍ PONE QUE HAS GANADO PERO NO SE YO E";
             }
-        }
+            else if (dealer.GetComponent<CardHand>().points < 21)
+            {
+                if (dealer.GetComponent<CardHand>().points > player.GetComponent<CardHand>().points)
+                {
+                    finalMessage.text = "GANÓ LA BANCA WEY";
+                }
+                else
+                {
+                    finalMessage.text = "AQUÍ PONE QUE HAS GANADO PERO NO SE YO E";
+                }
+            }
+        
     }
 
     public void PlayAgain()
