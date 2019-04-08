@@ -94,10 +94,10 @@ public class Deck : MonoBehaviour
             aux.Add(i);
         }
         randomDeal = ShuffleList(aux);
-        for (int i = 0; i < 52; i++)
+       /* for (int i = 0; i < 52; i++)
         {
-            Debug.Log(randomDeal[i]);
-        }
+            Debug.Log(randomDeal);
+        }*/
        
     }
 
@@ -110,6 +110,16 @@ public class Deck : MonoBehaviour
             /*TODO:
              * Si alguno de los dos obtiene Blackjack, termina el juego y mostramos mensaje
              */
+            if (dealer.GetComponent<CardHand>().points == 21 && player.GetComponent<CardHand>().points != 21)
+            {
+                finalMessage.text = "HAHAHAHAHAHA PRINGAO, TENIAS UN SOLO TRABAJO Y LA BANCA SACÓ BLACKJACK";
+            }else if (player.GetComponent<CardHand>().points == 21 && dealer.GetComponent<CardHand>().points != 21)
+            {
+                finalMessage.text = "MU BIEN SUERTUDO DE MIERDA, BLACKJACK!";
+            }else if(player.GetComponent<CardHand>().points == 21 && dealer.GetComponent<CardHand>().points == 21)
+            {
+                finalMessage.text = "PERO QUE ME ESTAS CONTANDO, ESTO ES UN EMPATE";
+            }
         }
     }
 
@@ -128,7 +138,7 @@ public class Deck : MonoBehaviour
         /*TODO:
          * Dependiendo de cómo se implemente ShuffleCards, es posible que haya que cambiar el índice.
          */
-        dealer.GetComponent<CardHand>().Push(faces[cardIndex],values[cardIndex]);
+        dealer.GetComponent<CardHand>().Push(faces[randomDeal[cardIndex]],values[randomDeal[cardIndex]]);
         cardIndex++;        
     }
 
@@ -137,7 +147,7 @@ public class Deck : MonoBehaviour
         /*TODO:
          * Dependiendo de cómo se implemente ShuffleCards, es posible que haya que cambiar el índice.
          */
-        player.GetComponent<CardHand>().Push(faces[cardIndex], values[cardIndex]/*,cardCopy*/);
+        player.GetComponent<CardHand>().Push(faces[randomDeal[cardIndex]], values[randomDeal[cardIndex]]/*,cardCopy*/);
         cardIndex++;
         CalculateProbabilities();
     }       
@@ -147,14 +157,22 @@ public class Deck : MonoBehaviour
         /*TODO: 
          * Si estamos en la mano inicial, debemos voltear la primera carta del dealer.
          */
+       //  if (player.GetComponent<CardHand>().)
         
         //Repartimos carta al jugador
         PushPlayer();
 
         /*TODO:
          * Comprobamos si el jugador ya ha perdido y mostramos mensaje
-         */      
-
+         */
+        if (player.GetComponent<CardHand>().points == 21)
+        {
+            finalMessage.text = "MU BIEN SUERTUDO DE MIERDA, BLACKJACK!";
+        }
+        if ( player.GetComponent<CardHand>().points >21)
+        {
+            finalMessage.text = "HAS PERDIDO HIJO DE PUTA";
+        }
     }
 
     public void Stand()
@@ -167,8 +185,31 @@ public class Deck : MonoBehaviour
          * Repartimos cartas al dealer si tiene 16 puntos o menos
          * El dealer se planta al obtener 17 puntos o más
          * Mostramos el mensaje del que ha ganado
-         */                
-         
+         */
+        if (dealer.GetComponent<CardHand>().points <= 16)
+        {
+            while (dealer.GetComponent<CardHand>().points < 17)
+            {
+                PushDealer();
+            }
+            dealer.GetComponent<CardHand>().InitialToggle();
+            if ( dealer.GetComponent<CardHand>().points == 21)
+            {
+                finalMessage.text = "MU BIEN SUERTUDO DE MIERDA, BLACKJACK!";
+            }
+            if (dealer.GetComponent<CardHand>().points > 21)
+            {
+                finalMessage.text = "AQUÍ PONE QUE HAS GANADO PERO NO SE YO E";
+            }
+            if(dealer.GetComponent<CardHand>().points> player.GetComponent<CardHand>().points)
+            {
+                finalMessage.text = "GANÓ LA BANCA WEY";
+            }
+            else
+            {
+                finalMessage.text = "AQUÍ PONE QUE HAS GANADO PERO NO SE YO E";
+            }
+        }
     }
 
     public void PlayAgain()
