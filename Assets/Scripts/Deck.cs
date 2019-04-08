@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Deck : MonoBehaviour
@@ -11,7 +12,7 @@ public class Deck : MonoBehaviour
     public Button playAgainButton;
     public Text finalMessage;
     public Text probMessage;
-    public int[] randomDeal = new int[52];
+    public List<int> randomDeal;
     public int[] values = new int[52];
     int cardIndex = 0;    
        
@@ -23,8 +24,10 @@ public class Deck : MonoBehaviour
 
     private void Start()
     {
+        randomDeal = new List<int>();
         ShuffleCards();
-        StartGame();        
+        StartGame(); 
+        
     }
 
     private void InitCardValues()
@@ -60,8 +63,24 @@ public class Deck : MonoBehaviour
     
 }
 
+    private List<E> ShuffleList<E>(List<E> inputList)
+    {
+        List<E> randomList = new List<E>();
 
-    int cont = 0;
+        System.Random r = new System.Random();
+     
+        int randomIndex = 0;
+        while (inputList.Count > 0)
+        {
+           
+            randomIndex = r.Next(0, inputList.Count); //Choose a random object in the list
+            randomList.Add(inputList[randomIndex]); //add it to the new, random list
+            inputList.RemoveAt(randomIndex); //remove to avoid duplicates
+        }
+
+        return randomList; //return the new random list
+    }
+
     private void ShuffleCards()
     {
         /*TODO:
@@ -69,34 +88,17 @@ public class Deck : MonoBehaviour
          * El método Random.Range(0,n), devuelve un valor entre 0 y n-1
          * Si lo necesitas, puedes definir nuevos arrays.
          */
-         
-        
-        for(int i=cont;i<values.Length;i++){
-            int randomValue = Random.Range(0, 51);
-            int cont2 = 0;
-            bool rep = false;
-            foreach(int val in randomDeal)
-            {
-                if (randomValue == randomDeal[cont2])
-                {
-                    ShuffleCards();
-                    rep = true;
-                    break;
-                }
-                cont2++;
-            }
-            if (!rep)
-            {
-                randomDeal[i] = randomValue;
-                Debug.Log(randomDeal[randomValue]);
-                cont++;
-            }
-           // break;
-        }
-        if (cont == 52)
+        List<int> aux = new List<int>();
+        for(int i=0; i<52; i++)
         {
-            cont = 0;
+            aux.Add(i);
         }
+        randomDeal = ShuffleList(aux);
+        for (int i = 0; i < 52; i++)
+        {
+            Debug.Log(randomDeal[i]);
+        }
+       
     }
 
     void StartGame()
