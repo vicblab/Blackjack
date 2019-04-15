@@ -201,7 +201,14 @@ public class Deck : MonoBehaviour
         {
             probDealerMasQueTu = 0;
         }
-
+        if (probDealerMasQueTu > 100)
+        {
+            probDealerMasQueTu = 100;
+        }
+        if (puntuacionVisible > player.GetComponent<CardHand>().points)
+        {
+            probDealerMasQueTu = 100;
+        }
         //2 ----------------------
 
         int diecisiete = 17 - player.GetComponent<CardHand>().points;
@@ -226,12 +233,13 @@ public class Deck : MonoBehaviour
         }
         foreach (GameObject c in dealer.GetComponent<CardHand>().cards)
         {
-           
+            if (c != dealer.GetComponent<CardHand>().cards[0])
+            {
                 if (c.GetComponent<CardModel>().value >= diecisiete && c.GetComponent<CardModel>().value <= blackjack)
                 {
                     cont2++;
                 }
-            
+            }
         }
         bool isAce = false;
         foreach (GameObject c in player.GetComponent<CardHand>().cards)
@@ -263,6 +271,8 @@ public class Deck : MonoBehaviour
         {
             probPuntuacionAlta = 0;
         }
+        
+       
 
         //3 --------------------------------------------------------------------------------------
 
@@ -293,6 +303,10 @@ public class Deck : MonoBehaviour
         }
         float probPasarse = 100 - probPuntuacionAlta - probMenosDiecisiete;
         if (probPasarse < 0)
+        {
+            probPasarse = 0;
+        }
+        if (player.GetComponent<CardHand>().points <= 11)
         {
             probPasarse = 0;
         }
